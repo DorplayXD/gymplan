@@ -1,490 +1,70 @@
-
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gym Plan</title>
-
-<style>
+<!-- GYM APP VERSION: 1.0.1 | PR AUTO UPDATE -->
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gym Plan</title><style>
 :root{--bg:#0d1117;--panel:#151c25;--line:#293544;--txt:#f4f7fb;--muted:#8d9aaa;--green:#70e0ad;--orange:#f0b66a}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.45 system-ui;padding:16px;max-width:760px;margin:auto}
-header{padding:8px 2px 20px}
-.eyebrow{color:var(--green);font-size:.72rem;letter-spacing:.16em;font-weight:800}
-h1{font-size:1.8rem;margin:8px 0;letter-spacing:-.04em}
-#subtitle{color:var(--muted);margin:0}
-.week{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-.day{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
-.daybtn{font:inherit;color:var(--txt);text-align:left;cursor:pointer;width:100%}
-.daybtn span{display:block;color:var(--green);font-size:.7rem;font-weight:800}
-.daybtn b{display:block;font-size:.9rem;margin:3px 0}
-.daybtn small{color:var(--muted);font-size:.75rem}
-.daybtn em{font-style:normal;color:var(--green);font-size:.72rem;margin-top:8px;display:block}
-.rest{display:flex;flex-direction:column;min-height:126px}
-.rest span{display:block;color:var(--green);font-size:.7rem;font-weight:800;margin-bottom:3px}
-.rest b{display:block;font-size:.9rem;margin:3px 0}
-h2{font-size:1rem;color:#b5c1ce;margin:22px 0 10px}
-.back{background:none;border:0;color:var(--green);padding:8px 0 18px;font-size:1rem;cursor:pointer}
-.screen[hidden]{display:none}
-.exercise{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:8px 0;padding:13px;display:flex;align-items:center;gap:8px;color:var(--txt);width:100%;text-align:left;cursor:pointer;flex-wrap:wrap}
-.exname{flex:1;min-width:0}
-.exname b{display:block;font-size:.9rem}
-.exname small{color:var(--muted);font-size:.75rem}
-.stats{display:flex;gap:7px;align-items:center;font-size:.72rem;white-space:nowrap}
-.stats .work{color:var(--green)}
-.stats .pr{color:#d5b8ff}
-.panel,.setcard,.optional{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;margin:10px 0}
-.panel h3,.setcard h3{margin:0 0 12px;font-size:1rem}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-label{font-size:.75rem;color:var(--muted)}
-input,select,textarea{display:block;width:100%;margin-top:5px;background:#0e141b;border:1px solid #344253;border-radius:9px;padding:11px;color:white;font:inherit;min-width:0}
-textarea{min-height:70px}
-.warm{margin-top:12px;padding:11px;background:#132c23;color:#a8f0c8;border-radius:10px;font-size:.85rem}
-.btn{width:100%;padding:13px;border:0;border-radius:10px;background:var(--green);color:#092016;font-weight:800;margin:8px 0;cursor:pointer}
-.btn.secondary{background:#202b37;color:#dce5ef}
-.setgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.setmini{position:relative;background:#0f151c;border:1px solid #2a3542;border-radius:10px;padding:9px 32px 9px 9px;font-size:.75rem;color:var(--muted)}
-.setmini b{display:block;color:var(--txt);font-size:.9rem}
-.setmini.active{border-color:var(--green)}
-.setcard button{margin-top:10px}
-.optional{border:1px dashed #7b6038;background:#211b13}
-.optional h2{color:var(--orange);margin:0 0 8px}
-.optional .exercise{border-color:#59452a}
-.foot button{background:#202b37;color:#cbd5e1;border:0;border-radius:10px;padding:12px;width:100%;margin:5px 0}
-.calendargrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.calhead,.calday{font-size:.72rem;text-align:center;padding:7px 2px;color:var(--muted)}
-.calday{background:var(--panel);border:1px solid var(--line);border-radius:7px;min-height:42px;color:var(--txt);cursor:pointer}
-.calday.has{border-color:var(--green);color:var(--green)}
-.calday.selected{background:#183528}
-.entry{padding:12px;border-radius:10px;background:var(--panel);margin:8px 0;font-size:.85rem}
-.entry small{color:var(--muted)}
-.row{display:flex;gap:8px;align-items:center}
-.row>*{flex:1}
-.ex-actions{display:flex;gap:5px;align-items:center;margin-left:auto;width:100%;justify-content:flex-end}
-.iconbtn{border:1px solid var(--line);background:#222;color:white;border-radius:8px;min-width:32px;height:32px;font-size:15px;cursor:pointer}
-.iconbtn:active{transform:scale(.96)}
-.btn.danger{background:#8b3030;color:#fff;border:0;margin-bottom:10px}
-.setmini .iconbtn{position:absolute;right:4px;top:4px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.45 system-ui;padding:16px;max-width:760px;margin:auto}header{padding:8px 2px 20px}.eyebrow{color:var(--green);font-size:.72rem;letter-spacing:.16em;font-weight:800}h1{font-size:1.8rem;margin:8px 0;letter-spacing:-.04em}#subtitle{color:var(--muted);margin:0}
+.week{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.day{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}.daybtn{font:inherit;color:var(--txt);text-align:left;cursor:pointer;width:100%}.daybtn span{display:block;color:var(--green);font-size:.7rem;font-weight:800}.daybtn b{display:block;font-size:.9rem;margin:3px 0}.daybtn small{color:var(--muted);font-size:.75rem}.daybtn em{font-style:normal;color:var(--green);font-size:.72rem;margin-top:8px;display:block}.rest{opacity:1;display:flex;flex-direction:column;justify-content:flex-start;min-height:126px}.rest span{display:block;color:var(--green);font-size:.7rem;font-weight:800;margin-bottom:3px}.rest b{display:block;font-size:.9rem;margin:3px 0}.rest small{display:block;color:var(--muted);font-size:.75rem}
+h2{font-size:1rem;color:#b5c1ce;margin:22px 0 10px}.back{background:none;border:0;color:var(--green);padding:8px 0 18px;font-size:1rem;cursor:pointer}.screen[hidden]{display:none}
+.exercise{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:8px 0;padding:13px;display:flex;align-items:center;gap:10px;color:var(--txt);width:100%;text-align:left;cursor:pointer}.exname{flex:1;min-width:0}.exname b{display:block;font-size:.9rem}.exname small{color:var(--muted);font-size:.75rem}.stats{display:flex;gap:7px;align-items:center;font-size:.72rem;white-space:nowrap}.stats .work{color:var(--green)}.stats .pr{color:#d5b8ff}.dots{font-size:1.25rem;color:var(--muted);padding:3px 7px}
+.panel,.setcard,.optional{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;margin:10px 0}.panel h3,.setcard h3{margin:0 0 12px;font-size:1rem}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{font-size:.75rem;color:var(--muted)}input,select,textarea{display:block;width:100%;margin-top:5px;background:#0e141b;border:1px solid #344253;border-radius:9px;padding:11px;color:white;font:inherit;min-width:0}textarea{min-height:70px}.warm{margin-top:12px;padding:11px;background:#132c23;color:#a8f0c8;border-radius:10px;font-size:.85rem}.btn{width:100%;padding:13px;border:0;border-radius:10px;background:var(--green);color:#092016;font-weight:800;margin:8px 0;cursor:pointer}.btn.secondary{background:#202b37;color:#dce5ef}.setgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.setmini{background:#0f151c;border:1px solid #2a3542;border-radius:10px;padding:9px;font-size:.75rem;color:var(--muted)}.setmini b{display:block;color:var(--txt);font-size:.9rem}.setmini.active{border-color:var(--green)}.optional{border:1px dashed #7b6038;background:#211b13}.optional h2{color:var(--orange);margin:0 0 8px}.optional .exercise{border-color:#59452a}.badge{font-size:.68rem;color:var(--orange);border:1px solid #59452a;border-radius:20px;padding:3px 7px}
+.foot button{background:#202b37;color:#cbd5e1;border:0;border-radius:10px;padding:12px;width:100%;margin:5px 0}.calendargrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.calhead,.calday{font-size:.72rem;text-align:center;padding:7px 2px;color:var(--muted)}.calday{background:var(--panel);border:1px solid var(--line);border-radius:7px;min-height:42px;color:var(--txt);cursor:pointer}.calday.has{border-color:var(--green);color:var(--green)}.calday.selected{background:#183528}.entry{padding:12px;border-radius:10px;background:var(--panel);margin:8px 0;font-size:.85rem}.entry small{color:var(--muted)}.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}
 @media(min-width:550px){.week{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:600px){.ex-actions{width:auto}}
-</style>
-</head>
-
-<body>
-<header>
-<div class="eyebrow">DEIN TRAININGSPLAN</div>
-<h1 id="title">Trainingsübersicht</h1>
-<p id="subtitle">Trainingsplan · Gym · Verlauf</p>
-</header>
-
-<section id="home" class="screen">
-<div class="panel">
-<h3>Mein Gym</h3>
-<div class="row">
-<select id="gymSelect"></select>
-<button class="btn" style="margin:5px 0;flex:0 0 45px" id="addGym">＋</button>
-<button class="btn secondary" style="margin:5px 0;flex:0 0 45px" id="delGym">−</button>
-</div>
-<small style="color:var(--muted)">Aktuelles Gym wird bei Training und Kalender gespeichert.</small>
-</div>
-
-<div class="week">
-<button class="day daybtn" data-w="0"><span>MO</span><b>Oberkörper A</b><small>Push · Pull</small><em>Training öffnen ↗</em></button>
-<button class="day daybtn" data-w="1"><span>DI</span><b>Unterkörper A</b><small>Beine · Core</small><em>Training öffnen ↗</em></button>
-<div class="day rest"><span>MI</span><b>Rest Day</b></div>
-<button class="day daybtn" data-w="2"><span>DO</span><b>Oberkörper B</b><small>Schulter · Rücken</small><em>Training öffnen ↗</em></button>
-<button class="day daybtn" data-w="3"><span>FR</span><b>Unterkörper B</b><small>Beine · Core</small><em>Training öffnen ↗</em></button>
-<div class="day rest"><span>SA / SO</span><b>Rest Day</b></div>
-</div>
-
-<button class="btn secondary" id="calendarBtn">📅 Trainingshistorie / Kalender</button>
-<div class="foot">
-<button id="backup">Backup exportieren</button>
-<button id="restore">Backup importieren</button>
-<input id="file" type="file" accept="application/json" hidden>
-</div>
-</section>
-
-<section id="workout" class="screen" hidden>
-<button class="back" id="homeback">← Übersicht</button>
-<div id="exercises"></div>
-</section>
-
-<section id="detail" class="screen" hidden>
-<button class="back" id="workback">← Training</button>
-<div id="details"></div>
-</section>
-
-<section id="calendar" class="screen" hidden>
-<button class="back" id="calback">← Übersicht</button>
-<div class="panel">
-<div class="row">
-<button class="btn secondary" id="prev">‹</button>
-<h3 id="month" style="text-align:center;flex:3"></h3>
-<button class="btn secondary" id="next">›</button>
-</div>
-<div id="calgrid" class="calendargrid"></div>
-<p style="color:var(--muted);font-size:.8rem">Trainingstage sind grün markiert. Datum antippen für Details oder Eintrag.</p>
-</div>
-<div id="caldetail"></div>
-</section>
-
+.ex-actions{display:flex;gap:5px;align-items:center;margin-left:auto}.iconbtn{border:1px solid var(--line,#333);background:var(--card,#222);color:var(--text,#fff);border-radius:8px;min-width:32px;height:32px;font-size:15px;cursor:pointer}.iconbtn:active{transform:scale(.96)}.btn.danger{background:#8b3030;color:#fff;border:0;margin-bottom:10px}.setmini{position:relative;padding-right:32px}.setmini .iconbtn{position:absolute;right:4px;top:4px}.exercise{gap:8px;flex-wrap:wrap}.ex-actions{width:100%;justify-content:flex-end}@media(min-width:600px){.ex-actions{width:auto}}
+</style></head><body>
+<header><div class="eyebrow">DEIN TRAININGSPLAN</div><h1 id="title">Trainingsübersicht</h1><p id="subtitle">Trainingsplan · Gym · Verlauf</p></header>
+<section id="home" class="screen"><div class="panel"><h3>Mein Gym</h3><div class="row"><select id="gymSelect"></select><button class="btn" style="margin:5px 0;flex:0 0 45px" id="addGym">＋</button><button class="btn secondary" style="margin:5px 0;flex:0 0 45px" id="delGym">−</button></div><small style="color:var(--muted)">Aktuelles Gym wird bei Training und Kalender gespeichert.</small></div>
+<div class="week"><button class="day daybtn" data-w="0"><span>MO</span><b>Oberkörper A</b><small>Push · Pull</small><em>Training öffnen ↗</em></button><button class="day daybtn" data-w="1"><span>DI</span><b>Unterkörper A</b><small>Beine · Core</small><em>Training öffnen ↗</em></button><div class="day rest"><span>MI</span><b>Rest Day</b></div><button class="day daybtn" data-w="2"><span>DO</span><b>Oberkörper B</b><small>Schulter · Rücken</small><em>Training öffnen ↗</em></button><button class="day daybtn" data-w="3"><span>FR</span><b>Unterkörper B</b><small>Beine · Core</small><em>Training öffnen ↗</em></button><div class="day rest"><span>SA / SO</span><b>Rest Day</b></div></div>
+<button class="btn secondary" id="calendarBtn">📅 Trainingshistorie / Kalender</button><div class="foot"><button id="backup">Backup exportieren</button><button id="restore">Backup importieren</button><input id="file" type="file" accept="application/json" hidden></div></section>
+<section id="workout" class="screen" hidden><button class="back" id="homeback">← Übersicht</button><div id="exercises"></div></section>
+<section id="detail" class="screen" hidden><button class="back" id="workback">← Training</button><div id="details"></div></section>
+<section id="calendar" class="screen" hidden><button class="back" id="calback">← Übersicht</button><div class="panel"><div class="row"><button class="btn secondary" id="prev">‹</button><h3 id="month" style="text-align:center;flex:3"></h3><button class="btn secondary" id="next">›</button></div><div id="calgrid" class="calendargrid"></div><p style="color:var(--muted);font-size:.8rem">Trainingstage sind grün markiert. Datum antippen für Details oder Eintrag.</p></div><div id="caldetail"></div></section>
 <script>
 const W=[
-["Oberkörper A",[
-["Cable External Rotation","1 × 15 / Seite",0],
-["Chest Press","2 × 6–8",2],
-["Lat Pulldown","2 × 6–8",2],
-["Seated Row","2 × 6–8",2],
-["Incline Chest Press","2 × 8–12",2],
-["Seitheben (Kurzhanteln)","2 × 8–12",2],
-["Biceps Curl","2 × 8–12",2],
-["Triceps Pushdown","2 × 8–12",2]]],
-["Unterkörper A",[
-["Leg Press","2 × 6–8",2],
-["Seated Leg Curl","2 × 8–12",2],
-["Leg Extension","2 × 8–12",2],
-["Wadenheben frei","3 × 8–12",3],
-["Adductor Machine","2 × 8–12",2],
-["Abdominal Machine","2 × 10–15",2]]],
-["Oberkörper B",[
-["Cable External Rotation","1 × 15 / Seite",0],
-["Shoulder Press","2 × 6–8",2],
-["Lat Pulldown","2 × 8–12",2],
-["Chest Press","2 × 8–12",2],
-["Reverse Fly / Rear Delt","2 × 8–12",2],
-["Seitheben (Kurzhanteln)","2 × 8–12",2],
-["Hammer Curl","2 × 8–12",2],
-["Triceps Pushdown","2 × 8–12",2]]],
-["Unterkörper B",[
-["Hip Thrust","2 × 6–8",2],
-["Seated Leg Curl","2 × 8–12",2],
-["Leg Press","2 × 8–12",2],
-["Leg Extension","2 × 8–12",2],
-["Wadenheben frei","3 × 8–12",3],
-["Adductor Machine","2 × 8–12",2],
-["Abdominal Machine","2 × 10–15",2]]]
-];
-
-const KEY="gymCleanV3";
-let D={exercise:{},sessions:{},gyms:["Mein Gym","Gym 2","Gym 3"],gym:"Mein Gym"};
-try{D=JSON.parse(localStorage.getItem(KEY))||D}catch(e){}
-if(!D.gyms)D.gyms=["Mein Gym"];
-if(!D.gym)D.gym=D.gyms[0];
-
-let wi=0,ei=0,calDate=new Date(),selectedDate=iso(new Date());
-const $=id=>document.getElementById(id);
-
-function iso(d){
-return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")
-}
+["Oberkörper A",[["Cable External Rotation","1 × 15 / Seite",0],["Chest Press","2 × 6–8",2],["Lat Pulldown","2 × 6–8",2],["Seated Row","2 × 6–8",2],["Incline Chest Press","2 × 8–12",2],["Seitheben (Kurzhanteln)","2 × 8–12",2],["Biceps Curl","2 × 8–12",2],["Triceps Pushdown","2 × 8–12",2]]],
+["Unterkörper A",[["Leg Press","2 × 6–8",2],["Seated Leg Curl","2 × 8–12",2],["Leg Extension","2 × 8–12",2],["Wadenheben frei","3 × 8–12",3],["Adductor Machine","2 × 8–12",2],["Abdominal Machine","2 × 10–15",2]]],
+["Oberkörper B",[["Cable External Rotation","1 × 15 / Seite",0],["Shoulder Press","2 × 6–8",2],["Lat Pulldown","2 × 8–12",2],["Chest Press","2 × 8–12",2],["Reverse Fly / Rear Delt","2 × 8–12",2],["Seitheben (Kurzhanteln)","2 × 8–12",2],["Hammer Curl","2 × 8–12",2],["Triceps Pushdown","2 × 8–12",2]]],
+["Unterkörper B",[["Hip Thrust","2 × 6–8",2],["Seated Leg Curl","2 × 8–12",2],["Leg Press","2 × 8–12",2],["Leg Extension","2 × 8–12",2],["Wadenheben frei","3 × 8–12",3],["Adductor Machine","2 × 8–12",2],["Abdominal Machine","2 × 10–15",2]]]];
+const KEY="gymCleanV3";let D={exercise:{},sessions:{},gyms:["Mein Gym","Gym 2","Gym 3"],gym:"Mein Gym"};
+try{D=JSON.parse(localStorage.getItem(KEY))||D}catch(e){};if(!D.gyms)D.gyms=["Mein Gym"];if(!D.gym)D.gym=D.gyms[0];
+let wi=0,ei=0,calDate=new Date(),selectedDate=iso(new Date());const $=id=>document.getElementById(id);
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function save(){localStorage.setItem(KEY,JSON.stringify(D))}
 function exd(n){return D.exercise[n]||(D.exercise[n]={pr:"",work:""})}
-function machineD(n){
-D.machines=D.machines||{};
-D.machines[D.gym]=D.machines[D.gym]||{};
-return D.machines[D.gym][n]||(D.machines[D.gym][n]={machine:"",settings:""})
-}
-function warm(n){
-let w=+exd(n).work;
-return w?Math.max(1,Math.round(w*.5*2)/2)+" kg × 5–8":"—"
-}
+function machineD(n){D.machines=D.machines||{};D.machines[D.gym]=D.machines[D.gym]||{};return D.machines[D.gym][n]||(D.machines[D.gym][n]={machine:"",settings:""})}
+function warm(n){let w=+exd(n).work;return w?Math.max(1,Math.round(w*.5*2)/2)+" kg × 5–8":"—"}
 function show(s){["home","workout","detail","calendar"].forEach(x=>$(x).hidden=x!==s)}
-
-function gymOptions(){
-let sel=$("gymSelect");
-sel.innerHTML="";
-D.gyms.forEach(g=>{
-let o=document.createElement("option");
-o.textContent=g;o.value=g;sel.append(o)
-});
-sel.value=D.gym
-}
-gymOptions();
-$("gymSelect").onchange=e=>{D.gym=e.target.value;save()};
-$("addGym").onclick=()=>{
-let g=prompt("Name des neuen Gyms:");
-if(g&&g.trim()&&!D.gyms.includes(g.trim())){
-D.gyms.push(g.trim());D.gym=g.trim();gymOptions();save()
-}};
-$("delGym").onclick=()=>{
-if(D.gyms.length<=1){alert("Mindestens ein Gym muss bleiben.");return}
-let g=D.gym;
-if(!confirm('Gym „'+g+'“ löschen? Maschineninfos dieses Gyms werden ebenfalls gelöscht. Trainingshistorie bleibt erhalten.'))return;
-D.gyms=D.gyms.filter(x=>x!==g);
-if(D.machines)delete D.machines[g];
-D.gym=D.gyms[0];gymOptions();save()
-};
-
+function gymOptions(){let sel=$("gymSelect");sel.innerHTML="";D.gyms.forEach(g=>{let o=document.createElement("option");o.textContent=g;o.value=g;sel.append(o)});sel.value=D.gym}
+gymOptions();$("gymSelect").onchange=e=>{D.gym=e.target.value;save()};
+$("addGym").onclick=()=>{let g=prompt("Name des neuen Gyms:");if(g&&g.trim()&&!D.gyms.includes(g.trim())){D.gyms.push(g.trim());D.gym=g.trim();gymOptions();save()}};
+$("delGym").onclick=()=>{if(D.gyms.length<=1){alert("Mindestens ein Gym muss bleiben.");return}let g=D.gym;if(!confirm('Gym „'+g+'“ löschen? Maschineninfos dieses Gyms werden ebenfalls gelöscht. Trainingshistorie bleibt erhalten.'))return;D.gyms=D.gyms.filter(x=>x!==g);if(D.machines)delete D.machines[g];D.gym=D.gyms[0];gymOptions();save()};
 document.querySelectorAll(".daybtn").forEach(b=>b.onclick=()=>openW(+b.dataset.w));
-
-function plan(i){
-D.plan=D.plan||{};
-if(!D.plan[i])D.plan[i]=W[i][1].map(e=>({name:e[0],scheme:e[1],count:e[2]}));
-return D.plan[i]
-}
-
-function openW(i){
-wi=i;show("workout");
-$("title").textContent=W[i][0];
-$("subtitle").textContent=["Montag","Dienstag","Donnerstag","Freitag"][i]+" · "+D.gym;
-$("exercises").innerHTML="<h2>Übungen</h2>";
-
-let warmup=document.createElement("div");
-warmup.className="panel warm";
-warmup.innerHTML="<b>Warm-up</b><p>5 Min. Fahrrad + 4 Min. Laufband</p>";
-$("exercises").append(warmup);
-
+function plan(i){D.plan=D.plan||{};if(!D.plan[i])D.plan[i]=W[i][1].map(e=>({name:e[0],scheme:e[1],count:e[2]}));return D.plan[i]}
+function openW(i){wi=i;show("workout");$("title").textContent=W[i][0];$("subtitle").textContent=["Montag","Dienstag","Donnerstag","Freitag"][i]+" · "+D.gym;$("exercises").innerHTML="<h2>Übungen</h2>";
+let warmup=document.createElement("div");warmup.className="panel warm";warmup.innerHTML="<b>Warm-up</b><p>5 Min. Fahrrad + 4 Min. Laufband</p>";$("exercises").append(warmup);
 plan(i).forEach((e,j)=>exerciseButton([e.name,e.scheme,e.count],j,false));
-
-let addMain=document.createElement("button");
-addMain.className="btn secondary";
-addMain.textContent="+ Übung hinzufügen";
-addMain.onclick=()=>{
-let name=prompt("Übungsname:");
-if(!name)return;
-let scheme=prompt("Satz-/Wiederholungsvorgabe:","2 × 8–12")||"2 × 8–12";
-let count=parseInt((scheme.match(/^(\d+)/)||[])[1])||2;
-plan(i).push({name,scheme,count});save();openW(i)
-};
-$("exercises").append(addMain);
-
-let opt=document.createElement("div");
-opt.className="optional";
-opt.innerHTML='<h2>OPTIONALE ÜBUNGEN</h2><small style="color:var(--muted)">Zusatz – nur wenn du möchtest</small>';
-let extras=(D.extra&&D.extra[i])||[];
-extras.forEach((e,j)=>exerciseButton([e.name,e.scheme||"optional",2],j,true,opt));
-
-let add=document.createElement("button");
-add.className="btn secondary";
-add.textContent="+ Optionale Übung hinzufügen";
-add.onclick=()=>{
-let n=prompt("Übungsname:");
-if(!n)return;
-D.extra=D.extra||{};D.extra[i]=D.extra[i]||[];
-D.extra[i].push({name:n,scheme:"optional"});save();openW(i)
-};
-opt.append(add);$("exercises").append(opt)
-}
-
-function editExercise(j){
-let e=plan(wi)[j],name=prompt("Übungsname:",e.name);
-if(name===null)return;
-let scheme=prompt("Satz-/Wiederholungsvorgabe:",e.scheme);
-if(scheme===null)return;
-e.name=name.trim()||e.name;e.scheme=scheme;
-e.count=parseInt((scheme.match(/^(\d+)/)||[])[1])||0;
-save();openW(wi)
-}
-function moveExercise(j,dir){
-let arr=plan(wi),to=j+dir;
-if(to<0||to>=arr.length)return;
-[arr[j],arr[to]]=[arr[to],arr[j]];save();openW(wi)
-}
-function deleteExercise(j){
-if(!confirm("Übung aus diesem Split löschen?"))return;
-plan(wi).splice(j,1);save();openW(wi)
-}
-
-function exerciseButton(e,j,isExtra,parent){
-let n=e[0],d=exd(n),b=document.createElement("div");
-b.className="exercise";
-b.innerHTML='<span class="exname"><b>'+n+'</b><small>'+e[1]+'</small></span>'+
-'<span class="stats"><span class="work">W '+(d.work||"—")+'</span><span class="pr">PR '+(d.pr||"—")+'</span></span>'+
-'<div class="ex-actions">'+
-'<button class="iconbtn edit" title="Bearbeiten">✎</button>'+
-'<button class="iconbtn up" title="Nach oben">↑</button>'+
-'<button class="iconbtn down" title="Nach unten">↓</button>'+
-'<button class="iconbtn delete" title="Löschen">🗑</button>'+
-'<button class="iconbtn machine" title="Maschine">⚙</button></div>';
-
-b.querySelector(".exname").onclick=()=>openE(n,e[2],isExtra);
-b.querySelector(".stats").onclick=()=>openE(n,e[2],isExtra);
-b.querySelector(".edit").onclick=()=>isExtra?editExtra(j):editExercise(j);
-b.querySelector(".up").onclick=()=>isExtra?moveExtra(j,-1):moveExercise(j,-1);
-b.querySelector(".down").onclick=()=>isExtra?moveExtra(j,1):moveExercise(j,1);
-b.querySelector(".delete").onclick=()=>isExtra?deleteExtra(j):deleteExercise(j);
-b.querySelector(".machine").onclick=()=>machineInfo(n);
-(parent||$("exercises")).append(b)
-}
-
-function editExtra(j){
-let e=D.extra[wi][j],n=prompt("Übungsname:",e.name);
-if(n===null)return;
-e.name=n;
-let sc=prompt("Vorgabe:",e.scheme||"optional");
-if(sc===null)return;
-e.scheme=sc;save();openW(wi)
-}
-function moveExtra(j,dir){
-let a=D.extra[wi],to=j+dir;
-if(to<0||to>=a.length)return;
-[a[j],a[to]]=[a[to],a[j]];save();openW(wi)
-}
-function deleteExtra(j){
-if(!confirm("Optionale Übung löschen?"))return;
-D.extra[wi].splice(j,1);save();openW(wi)
-}
-function machineInfo(n){
-let d=machineD(n);
-let machine=prompt("Maschine / Gerätename für „"+D.gym+"“:",d.machine||"");
-if(machine===null)return;
-let settings=prompt("Einstellungen (Sitzhöhe, Polster, Griff etc.):",d.settings||"");
-if(settings===null)return;
-d.machine=machine;d.settings=settings;save();
-alert("Maschineninfo für "+D.gym+" gespeichert.")
-}
-
-function openE(n,count,extra){
-ei=n;show("detail");
-$("title").textContent=n;
-$("subtitle").textContent=(extra?"OPTIONAL · ":"")+D.gym;
-$("details").innerHTML=
-'<div class="panel"><h3>Übungsdaten</h3><div class="grid">'+
-'<label>Arbeitsgewicht (kg)<input id="work" type="number" step=".5" placeholder="kg" value="'+exd(n).work+'"></label>'+
-'<label>PR (kg)<input id="pr" type="number" step=".5" placeholder="kg" value="'+exd(n).pr+'"></label>'+
-'</div><div class="warm" id="warm"></div>'+
-'<p style="color:var(--muted);font-size:.8rem" id="machine"></p></div>'+
-'<button class="btn" id="start">Arbeitssätze öffnen ↓</button><div id="sets"></div>';
-
-let d=exd(n),md=machineD(n);
-function upd(){
-d.work=$("work").value;
-d.pr=$("pr").value;
-save();
-$("warm").textContent="Warm-up: "+warm(n)+(d.work?" · Arbeitsgewicht "+d.work+" kg":"");
-$("machine").textContent=(md.machine||"Maschine in "+D.gym+" nicht hinterlegt")+(md.settings?" · "+md.settings:"")
-}
-$("work").oninput=$("pr").oninput=upd;
-upd();
-
-$("start").onclick=()=>{
-let area=$("sets"),btn=$("start");
-if(area.innerHTML.trim()){
-let closed=area.style.display==="none";
-area.style.display=closed?"block":"none";
-btn.textContent=closed?"Arbeitssätze schließen ↑":"Arbeitssätze öffnen ↓"
-}else{
-setEntry(n,count||2);
-btn.textContent="Arbeitssätze schließen ↑";
-$("sets").style.display="block"
-}
-}
-}
-
-function setEntry(n,count){
-let k=selectedDate+"_"+D.gym+"_"+n;
-let s=D.sessions[k]||(D.sessions[k]={sets:[],workout:W[wi][0],gym:D.gym,date:selectedDate});
-let area=$("sets");
-area.innerHTML='<h2>Satzauswertung</h2>'+
-'<button class="btn danger" id="resetAll">Alle Sätze löschen</button>'+
-'<details open id="setDetails"><summary>Sätze ein-/ausblenden</summary>'+
-'<div class="setgrid" id="setgrid"></div><div id="setform"></div></details>';
-
-$("resetAll").onclick=()=>{
-if(confirm("Alle Sätze dieser Übung für diesen Tag löschen?")){
-s.sets=[];save();refresh();form()
-}};
-
-function refresh(){
-let g=$("setgrid");g.innerHTML="";
-s.sets.forEach((v,x)=>{
-let z=document.createElement("div");
-z.className="setmini active";
-z.innerHTML="Satz "+(x+1)+"<b>"+v.kg+" kg · "+v.rep+" Wdh</b><button class=iconbtn data-del="+x+" title='Satz löschen'>🗑</button>";
-z.querySelector("button").onclick=()=>{
-if(confirm("Satz "+(x+1)+" löschen?")){
-s.sets.splice(x,1);save();refresh();form()
-}};
-g.append(z)
-});
-let next=document.createElement("div");
-next.className="setmini";
-next.innerHTML="Satz "+(s.sets.length+1)+"<b>bereit</b>";
-g.append(next)
-}
-
-/* REPARIERT: Satz speichern + PR automatisch berechnen */
-function form(){
-let i=s.sets.length,f=$("setform");
-f.innerHTML='<div class="setcard"><h3>Satz '+(i+1)+' eintragen</h3>'+
-'<div class="grid"><label>Gewicht (kg)<input id="kg" type="number" step=".5" placeholder="kg"></label>'+
-'<label>Wiederholungen<input id="rep" type="number" placeholder="Wdh."></label></div>'+
-'<button class="btn">Satz '+(i+1)+' speichern ✓</button></div>';
-
-f.querySelector("button").onclick=()=>{
-let kg=Number($("kg").value),rep=Number($("rep").value);
-if(!Number.isFinite(kg)||kg<=0||!Number.isFinite(rep)||rep<=0){
-alert("Bitte gültiges Gewicht und Wiederholungen eingeben.");return
-}
-s.sets.push({kg:String(kg),rep:String(rep)});
-
-/* PR aus bisherigem PR und allen gespeicherten Sätzen */
-let oldPR=Number(exd(n).pr)||0;
-let newPR=Math.max(oldPR,...s.sets.map(x=>Number(x.kg)||0));
-exd(n).pr=String(newPR);
-if($("pr"))$("pr").value=String(newPR);
-
-save();refresh();form()
-}
-}
-refresh();form()
-}
-
-$("homeback").onclick=()=>{
-show("home");$("title").textContent="Trainingsübersicht";
-$("subtitle").textContent="Trainingsplan · Gym · Verlauf"
-};
-$("workback").onclick=()=>openW(wi);
-$("calendarBtn").onclick=calendarOpen;
-$("calback").onclick=()=>show("home");
-
+let addMain=document.createElement("button");addMain.className="btn secondary";addMain.textContent="+ Übung hinzufügen";addMain.onclick=()=>{let name=prompt("Übungsname:");if(!name)return;let scheme=prompt("Satz-/Wiederholungsvorgabe:","2 × 8–12")||"2 × 8–12";let count=parseInt((scheme.match(/^(\d+)/)||[])[1])||2;plan(i).push({name,scheme,count});save();openW(i)};$("exercises").append(addMain);
+let opt=document.createElement("div");opt.className="optional";opt.innerHTML='<h2>OPTIONALE ÜBUNGEN</h2><small style="color:var(--muted)">Zusatz – nur wenn du möchtest</small>';let extras=(D.extra&&D.extra[i])||[];extras.forEach((e,j)=>exerciseButton([e.name,e.scheme||"optional",2],j,true,opt));let add=document.createElement("button");add.className="btn secondary";add.textContent="+ Optionale Übung hinzufügen";add.onclick=()=>{let n=prompt("Übungsname:");if(!n)return;D.extra=D.extra||{};D.extra[i]=D.extra[i]||[];D.extra[i].push({name:n,scheme:"optional"});save();openW(i)};opt.append(add);$("exercises").append(opt)}
+function editExercise(j){let e=plan(wi)[j],name=prompt("Übungsname:",e.name);if(name===null)return;let scheme=prompt("Satz-/Wiederholungsvorgabe:",e.scheme);if(scheme===null)return;e.name=name.trim()||e.name;e.scheme=scheme;e.count=parseInt((scheme.match(/^(\d+)/)||[])[1])||0;save();openW(wi)}
+function moveExercise(j,dir){let arr=plan(wi),to=j+dir;if(to<0||to>=arr.length)return;[arr[j],arr[to]]=[arr[to],arr[j]];save();openW(wi)}
+function deleteExercise(j){if(!confirm("Übung aus diesem Split löschen?"))return;plan(wi).splice(j,1);save();openW(wi)}
+function exerciseButton(e,j,isExtra,parent){let n=e[0],d=exd(n),b=document.createElement("div");b.className="exercise";b.innerHTML='<span class="exname"><b>'+n+'</b><small>'+e[1]+'</small></span><span class="stats"><span class="work">W '+(d.work||"—")+'</span><span class="pr">PR '+(d.pr||"—")+'</span></span><div class="ex-actions"><button class="iconbtn edit" title="Bearbeiten">✎</button><button class="iconbtn up" title="Nach oben">↑</button><button class="iconbtn down" title="Nach unten">↓</button><button class="iconbtn delete" title="Löschen">🗑</button><button class="iconbtn machine" title="Maschine">⚙</button></div>';b.querySelector(".exname").onclick=()=>openE(n,e[2],isExtra);b.querySelector(".stats").onclick=()=>openE(n,e[2],isExtra);b.querySelector(".edit").onclick=()=>isExtra?editExtra(j):editExercise(j);b.querySelector(".up").onclick=()=>isExtra?moveExtra(j,-1):moveExercise(j,-1);b.querySelector(".down").onclick=()=>isExtra?moveExtra(j,1):moveExercise(j,1);b.querySelector(".delete").onclick=()=>isExtra?deleteExtra(j):deleteExercise(j);b.querySelector(".machine").onclick=()=>machineInfo(n);(parent||$("exercises")).append(b)}
+function editExtra(j){let e=D.extra[wi][j],n=prompt("Übungsname:",e.name);if(n===null)return;e.name=n;let sc=prompt("Vorgabe:",e.scheme||"optional");if(sc===null)return;e.scheme=sc;save();openW(wi)}
+function moveExtra(j,dir){let a=D.extra[wi],to=j+dir;if(to<0||to>=a.length)return;[a[j],a[to]]=[a[to],a[j]];save();openW(wi)}
+function deleteExtra(j){if(!confirm("Optionale Übung löschen?"))return;D.extra[wi].splice(j,1);save();openW(wi)}
+function machineInfo(n){let d=machineD(n);let machine=prompt("Maschine / Gerätename für „"+D.gym+"“:",d.machine||"");if(machine===null)return;let settings=prompt("Einstellungen (Sitzhöhe, Polster, Griff etc.):",d.settings||"");if(settings===null)return;d.machine=machine;d.settings=settings;save();alert("Maschineninfo für "+D.gym+" gespeichert.")}
+function openE(n,count,extra){ei=n;show("detail");$("title").textContent=n;$("subtitle").textContent=(extra?"OPTIONAL · ":"")+D.gym;$("details").innerHTML='<div class="panel"><h3>Übungsdaten</h3><div class="grid"><label>Arbeitsgewicht (kg)<input id="work" type="number" step=".5" placeholder="kg" value="'+exd(n).work+'"></label><label>PR (kg)<input id="pr" type="number" step=".5" placeholder="kg" value="'+exd(n).pr+'"></label></div><div class="warm" id="warm"></div><p style="color:var(--muted);font-size:.8rem" id="machine"></p></div><button class="btn" id="start">Arbeitssätze öffnen ↓</button><div id="sets"></div>';
+let d=exd(n),md=machineD(n);function upd(){d.work=$("work").value;d.pr=$("pr").value;save();$("warm").textContent="Warm-up: "+warm(n)+(d.work?" · Arbeitsgewicht "+d.work+" kg":"");$("machine").textContent=(md.machine||"Maschine in "+D.gym+" nicht hinterlegt")+(md.settings?" · "+md.settings:"")};$("work").oninput=()=>{d.work=$("work").value;save();$("warm").textContent="Warm-up: "+warm(n)+(d.work?" · Arbeitsgewicht "+d.work+" kg":"")};$("pr").oninput=()=>{d.pr=$("pr").value;save()};upd();$("start").onclick=()=>{let area=$("sets"),btn=$("start");if(area.innerHTML.trim()){let closed=area.style.display==="none";area.style.display=closed?"block":"none";btn.textContent=closed?"Arbeitssätze schließen ↑":"Arbeitssätze öffnen ↓"}else{setEntry(n,count||2);btn.textContent="Arbeitssätze schließen ↑";$("sets").style.display="block"}}}
+function setEntry(n,count){let k=selectedDate+"_"+D.gym+"_"+n,s=D.sessions[k]||(D.sessions[k]={sets:[],workout:W[wi][0],gym:D.gym,date:selectedDate}),area=$("sets");area.innerHTML='<h2>Satzauswertung</h2><button class="btn danger" id="resetAll">Alle Sätze löschen</button><details open id="setDetails"><summary>Sätze ein-/ausblenden</summary><div class="setgrid" id="setgrid"></div><div id="setform"></div></details>'; $("resetAll").onclick=()=>{if(confirm("Alle Sätze dieser Übung für diesen Tag löschen?")){s.sets=[];save();refresh();form()}};
+function refresh(){let g=$("setgrid");g.innerHTML="";s.sets.forEach((v,x)=>{let z=document.createElement("div");z.className="setmini active";z.innerHTML="Satz "+(x+1)+"<b>"+v.kg+" kg · "+v.rep+" Wdh</b><button class=iconbtn data-del="+x+" title='Satz löschen'>🗑</button>";z.querySelector("button").onclick=()=>{if(confirm("Satz "+(x+1)+" löschen?")){s.sets.splice(x,1);save();refresh();form()}};g.append(z)});let next=document.createElement("div");next.className="setmini";next.innerHTML="Satz "+(s.sets.length+1)+"<b>bereit</b>";g.append(next)}
+function form(){let i=s.sets.length,f=$("setform");f.innerHTML='<div class="setcard"><h3>Satz '+(i+1)+' eintragen</h3><div class="grid"><label>Gewicht (kg)<input id="kg" type="number" step=".5" placeholder="kg"></label><label>Wiederholungen<input id="rep" type="number" placeholder="Wdh."></label></div><button class="btn">Satz '+(i+1)+' speichern ✓</button></div>';f.querySelector("button").onclick=()=>{let kg=$("kg").value,rep=$("rep").value;if(!kg||!rep){alert("Bitte Gewicht und Wiederholungen eingeben.");return}let weight=Number(kg),reps=Number(rep);s.sets.push({kg:String(kg),rep:String(rep)});let currentPR=Number(exd(n).pr)||0;
+if(reps===1&&weight>currentPR){exd(n).pr=String(weight);if($("pr"))$("pr").value=String(weight);alert("Neuer PR! "+weight+" kg × 1 Wiederholung 🏆")}
+save();refresh();form()}}
+refresh();form()}
+$("homeback").onclick=()=>{show("home");$("title").textContent="Trainingsübersicht";$("subtitle").textContent="Trainingsplan · Gym · Verlauf"};$("workback").onclick=()=>openW(wi);
+$("calendarBtn").onclick=calendarOpen;$("calback").onclick=()=>show("home");
 function calendarOpen(){show("calendar");calendarRender()}
-function calendarRender(){
-let y=calDate.getFullYear(),m=calDate.getMonth();
-$("month").textContent=calDate.toLocaleDateString("de-DE",{month:"long",year:"numeric"});
-let g=$("calgrid");g.innerHTML="";
-["Mo","Di","Mi","Do","Fr","Sa","So"].forEach(x=>{
-let d=document.createElement("div");d.className="calhead";d.textContent=x;g.append(d
-)});
-let first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate();
-for(let i=0;i<first;i++)g.append(document.createElement("div"));
-for(let d=1;d<=days;d++){
-let date=iso(new Date(y,m,d)),b=document.createElement("button");
-b.className="calday"+(Object.values(D.sessions).some(s=>s.date===date)?" has":"")+(date===selectedDate?" selected":"");
-b.textContent=d;
-b.onclick=()=>{selectedDate=date;calendarRender();calendarDetail(date)};
-g.append(b)
-}
-calendarDetail(selectedDate)
-}
-function calendarDetail(date){
-let a=Object.values(D.sessions).filter(s=>s.date===date);
-$("caldetail").innerHTML='<h2>'+new Date(date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"long"})+'</h2>'+
-a.map(s=>'<div class="entry"><b>'+s.workout+'</b><br><small>'+s.gym+' · '+Object.keys(s.sets||{}).length+' Sätze erfasst</small></div>').join("")+
-'<button class="btn secondary" id="manual">Training für diesen Tag eintragen / nachholen</button>';
-$("manual").onclick=()=>{
-let w=prompt("Welche Einheit? 1 Oberkörper A, 2 Unterkörper A, 3 Oberkörper B, 4 Unterkörper B");
-let i=+w-1;if(i<0||i>3)return;
-wi=i;show("workout");selectedDate=date;openW(i)
-}
-}
-$("prev").onclick=()=>{calDate.setMonth(calDate.getMonth()-1);calendarRender()};
-$("next").onclick=()=>{calDate.setMonth(calDate.getMonth()+1);calendarRender()};
-$("backup").onclick=()=>{
-let a=document.createElement("a");
-a.href=URL.createObjectURL(new Blob([JSON.stringify(D)],{type:"application/json"}));
-a.download="gym-backup.json";a.click()
-};
-$("restore").onclick=()=>$("file").click();
-$("file").onchange=async e=>{
-try{
-D=JSON.parse(await e.target.files[0].text());
-D.gyms=D.gyms||["Mein Gym"];D.gym=D.gym||D.gyms[0];
-save();gymOptions();alert("Backup geladen")
-}catch{alert("Backup ungültig")}
-};
-</script>
-</body>
-</html>
+function calendarRender(){let y=calDate.getFullYear(),m=calDate.getMonth();$("month").textContent=calDate.toLocaleDateString("de-DE",{month:"long",year:"numeric"});let g=$("calgrid");g.innerHTML="";["Mo","Di","Mi","Do","Fr","Sa","So"].forEach(x=>{let d=document.createElement("div");d.className="calhead";d.textContent=x;g.append(d)});let first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate();for(let i=0;i<first;i++)g.append(document.createElement("div"));for(let d=1;d<=days;d++){let date=iso(new Date(y,m,d)),b=document.createElement("button");b.className="calday"+(Object.values(D.sessions).some(s=>s.date===date)?" has":"")+(date===selectedDate?" selected":"");b.textContent=d;b.onclick=()=>{selectedDate=date;calendarRender();calendarDetail(date)};g.append(b)}calendarDetail(selectedDate)}
+function calendarDetail(date){let a=Object.values(D.sessions).filter(s=>s.date===date);$("caldetail").innerHTML='<h2>'+new Date(date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"long"})+'</h2>'+a.map(s=>'<div class="entry"><b>'+s.workout+'</b><br><small>'+s.gym+' · '+Object.keys(s.sets||{}).length+' Sätze erfasst</small></div>').join("")+'<button class="btn secondary" id="manual">Training für diesen Tag eintragen / nachholen</button>'; $("manual").onclick=()=>{let w=prompt("Welche Einheit? 1 Oberkörper A, 2 Unterkörper A, 3 Oberkörper B, 4 Unterkörper B");let i=+w-1;if(i<0||i>3)return;wi=i;show("workout");selectedDate=date;openW(i)}}
+$("prev").onclick=()=>{calDate.setMonth(calDate.getMonth()-1);calendarRender()};$("next").onclick=()=>{calDate.setMonth(calDate.getMonth()+1);calendarRender()};
+$("backup").onclick=()=>{let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(D)],{type:"application/json"}));a.download="gym-backup.json";a.click()};
+$("restore").onclick=()=>$("file").click();$("file").onchange=async e=>{try{D=JSON.parse(await e.target.files[0].text());D.gyms=D.gyms||["Mein Gym"];D.gym=D.gym||D.gyms[0];save();gymOptions();alert("Backup geladen")}catch{alert("Backup ungültig")}};
+</script></body></html>
