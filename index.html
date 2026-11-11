@@ -1,4 +1,4 @@
-<!-- GYM APP VERSION: 1.0.1 | PR AUTO UPDATE -->
+<!-- GYM APP VERSION: 1.0.2 | PR AUTO UPDATE FIX -->
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gym Plan</title><style>
 :root{--bg:#0d1117;--panel:#151c25;--line:#293544;--txt:#f4f7fb;--muted:#8d9aaa;--green:#70e0ad;--orange:#f0b66a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.45 system-ui;padding:16px;max-width:760px;margin:auto}header{padding:8px 2px 20px}.eyebrow{color:var(--green);font-size:.72rem;letter-spacing:.16em;font-weight:800}h1{font-size:1.8rem;margin:8px 0;letter-spacing:-.04em}#subtitle{color:var(--muted);margin:0}
@@ -29,6 +29,31 @@ let wi=0,ei=0,calDate=new Date(),selectedDate=iso(new Date());const $=id=>docume
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function save(){localStorage.setItem(KEY,JSON.stringify(D))}
 function exd(n){return D.exercise[n]||(D.exercise[n]={pr:"",work:""})}
+
+/* PR-FIX 1.0.2:
+   Historische Ein-Wiederholungs-Sätze auswerten. Neue Sessions speichern s.exercise,
+   ältere Sessions werden über Datum + bekannte Gym-Namen im Schlüssel erkannt. */
+function sessionExerciseName(key,s){
+ if(s&&s.exercise)return s.exercise;
+ let rest=String(key);
+ if(rest.length>=11&&rest[10]==="_")rest=rest.slice(11);
+ let gyms=[...(D.gyms||[]),s&&s.gym,D.gym].filter(Boolean);
+ gyms=[...new Set(gyms)].sort((a,b)=>b.length-a.length);
+ for(let g of gyms){if(rest.startsWith(g+"_"))return rest.slice(g.length+1)}
+ let p=rest.indexOf("_");
+ return p>=0?rest.slice(p+1):rest;
+}
+function calculatePR(n){
+ let d=exd(n),best=Number(d.pr)||0;
+ Object.entries(D.sessions||{}).forEach(([key,s])=>{
+  if(sessionExerciseName(key,s)!==n)return;
+  (s.sets||[]).forEach(v=>{
+   if(Number(v.rep)===1){let kg=Number(v.kg)||0;if(kg>best)best=kg}
+  });
+ });
+ if(best>(Number(d.pr)||0)){d.pr=String(best);save()}
+ return best;
+}
 function machineD(n){D.machines=D.machines||{};D.machines[D.gym]=D.machines[D.gym]||{};return D.machines[D.gym][n]||(D.machines[D.gym][n]={machine:"",settings:""})}
 function warm(n){let w=+exd(n).work;return w?Math.max(1,Math.round(w*.5*2)/2)+" kg × 5–8":"—"}
 function show(s){["home","workout","detail","calendar"].forEach(x=>$(x).hidden=x!==s)}
@@ -46,18 +71,19 @@ let opt=document.createElement("div");opt.className="optional";opt.innerHTML='<h
 function editExercise(j){let e=plan(wi)[j],name=prompt("Übungsname:",e.name);if(name===null)return;let scheme=prompt("Satz-/Wiederholungsvorgabe:",e.scheme);if(scheme===null)return;e.name=name.trim()||e.name;e.scheme=scheme;e.count=parseInt((scheme.match(/^(\d+)/)||[])[1])||0;save();openW(wi)}
 function moveExercise(j,dir){let arr=plan(wi),to=j+dir;if(to<0||to>=arr.length)return;[arr[j],arr[to]]=[arr[to],arr[j]];save();openW(wi)}
 function deleteExercise(j){if(!confirm("Übung aus diesem Split löschen?"))return;plan(wi).splice(j,1);save();openW(wi)}
-function exerciseButton(e,j,isExtra,parent){let n=e[0],d=exd(n),b=document.createElement("div");b.className="exercise";b.innerHTML='<span class="exname"><b>'+n+'</b><small>'+e[1]+'</small></span><span class="stats"><span class="work">W '+(d.work||"—")+'</span><span class="pr">PR '+(d.pr||"—")+'</span></span><div class="ex-actions"><button class="iconbtn edit" title="Bearbeiten">✎</button><button class="iconbtn up" title="Nach oben">↑</button><button class="iconbtn down" title="Nach unten">↓</button><button class="iconbtn delete" title="Löschen">🗑</button><button class="iconbtn machine" title="Maschine">⚙</button></div>';b.querySelector(".exname").onclick=()=>openE(n,e[2],isExtra);b.querySelector(".stats").onclick=()=>openE(n,e[2],isExtra);b.querySelector(".edit").onclick=()=>isExtra?editExtra(j):editExercise(j);b.querySelector(".up").onclick=()=>isExtra?moveExtra(j,-1):moveExercise(j,-1);b.querySelector(".down").onclick=()=>isExtra?moveExtra(j,1):moveExercise(j,1);b.querySelector(".delete").onclick=()=>isExtra?deleteExtra(j):deleteExercise(j);b.querySelector(".machine").onclick=()=>machineInfo(n);(parent||$("exercises")).append(b)}
+function exerciseButton(e,j,isExtra,parent){let n=e[0],d=exd(n),pr=calculatePR(n),b=document.createElement("div");b.className="exercise";b.innerHTML='<span class="exname"><b>'+n+'</b><small>'+e[1]+'</small></span><span class="stats"><span class="work">W '+(d.work||"—")+'</span><span class="pr">PR '+(pr||"—")+'</span></span><div class="ex-actions"><button class="iconbtn edit" title="Bearbeiten">✎</button><button class="iconbtn up" title="Nach oben">↑</button><button class="iconbtn down" title="Nach unten">↓</button><button class="iconbtn delete" title="Löschen">🗑</button><button class="iconbtn machine" title="Maschine">⚙</button></div>';b.querySelector(".exname").onclick=()=>openE(n,e[2],isExtra);b.querySelector(".stats").onclick=()=>openE(n,e[2],isExtra);b.querySelector(".edit").onclick=()=>isExtra?editExtra(j):editExercise(j);b.querySelector(".up").onclick=()=>isExtra?moveExtra(j,-1):moveExercise(j,-1);b.querySelector(".down").onclick=()=>isExtra?moveExtra(j,1):moveExercise(j,1);b.querySelector(".delete").onclick=()=>isExtra?deleteExtra(j):deleteExercise(j);b.querySelector(".machine").onclick=()=>machineInfo(n);(parent||$("exercises")).append(b)}
 function editExtra(j){let e=D.extra[wi][j],n=prompt("Übungsname:",e.name);if(n===null)return;e.name=n;let sc=prompt("Vorgabe:",e.scheme||"optional");if(sc===null)return;e.scheme=sc;save();openW(wi)}
 function moveExtra(j,dir){let a=D.extra[wi],to=j+dir;if(to<0||to>=a.length)return;[a[j],a[to]]=[a[to],a[j]];save();openW(wi)}
 function deleteExtra(j){if(!confirm("Optionale Übung löschen?"))return;D.extra[wi].splice(j,1);save();openW(wi)}
 function machineInfo(n){let d=machineD(n);let machine=prompt("Maschine / Gerätename für „"+D.gym+"“:",d.machine||"");if(machine===null)return;let settings=prompt("Einstellungen (Sitzhöhe, Polster, Griff etc.):",d.settings||"");if(settings===null)return;d.machine=machine;d.settings=settings;save();alert("Maschineninfo für "+D.gym+" gespeichert.")}
-function openE(n,count,extra){ei=n;show("detail");$("title").textContent=n;$("subtitle").textContent=(extra?"OPTIONAL · ":"")+D.gym;$("details").innerHTML='<div class="panel"><h3>Übungsdaten</h3><div class="grid"><label>Arbeitsgewicht (kg)<input id="work" type="number" step=".5" placeholder="kg" value="'+exd(n).work+'"></label><label>PR (kg)<input id="pr" type="number" step=".5" placeholder="kg" value="'+exd(n).pr+'"></label></div><div class="warm" id="warm"></div><p style="color:var(--muted);font-size:.8rem" id="machine"></p></div><button class="btn" id="start">Arbeitssätze öffnen ↓</button><div id="sets"></div>';
+function openE(n,count,extra){ei=n;calculatePR(n);show("detail");$("title").textContent=n;$("subtitle").textContent=(extra?"OPTIONAL · ":"")+D.gym;$("details").innerHTML='<div class="panel"><h3>Übungsdaten</h3><div class="grid"><label>Arbeitsgewicht (kg)<input id="work" type="number" step=".5" placeholder="kg" value="'+exd(n).work+'"></label><label>PR (kg)<input id="pr" type="number" step=".5" placeholder="kg" value="'+exd(n).pr+'"></label></div><div class="warm" id="warm"></div><p style="color:var(--muted);font-size:.8rem" id="machine"></p></div><button class="btn" id="start">Arbeitssätze öffnen ↓</button><div id="sets"></div>';
 let d=exd(n),md=machineD(n);function upd(){d.work=$("work").value;d.pr=$("pr").value;save();$("warm").textContent="Warm-up: "+warm(n)+(d.work?" · Arbeitsgewicht "+d.work+" kg":"");$("machine").textContent=(md.machine||"Maschine in "+D.gym+" nicht hinterlegt")+(md.settings?" · "+md.settings:"")};$("work").oninput=()=>{d.work=$("work").value;save();$("warm").textContent="Warm-up: "+warm(n)+(d.work?" · Arbeitsgewicht "+d.work+" kg":"")};$("pr").oninput=()=>{d.pr=$("pr").value;save()};upd();$("start").onclick=()=>{let area=$("sets"),btn=$("start");if(area.innerHTML.trim()){let closed=area.style.display==="none";area.style.display=closed?"block":"none";btn.textContent=closed?"Arbeitssätze schließen ↑":"Arbeitssätze öffnen ↓"}else{setEntry(n,count||2);btn.textContent="Arbeitssätze schließen ↑";$("sets").style.display="block"}}}
-function setEntry(n,count){let k=selectedDate+"_"+D.gym+"_"+n,s=D.sessions[k]||(D.sessions[k]={sets:[],workout:W[wi][0],gym:D.gym,date:selectedDate}),area=$("sets");area.innerHTML='<h2>Satzauswertung</h2><button class="btn danger" id="resetAll">Alle Sätze löschen</button><details open id="setDetails"><summary>Sätze ein-/ausblenden</summary><div class="setgrid" id="setgrid"></div><div id="setform"></div></details>'; $("resetAll").onclick=()=>{if(confirm("Alle Sätze dieser Übung für diesen Tag löschen?")){s.sets=[];save();refresh();form()}};
+function setEntry(n,count){let k=selectedDate+"_"+D.gym+"_"+n,s=D.sessions[k]||(D.sessions[k]={sets:[],workout:W[wi][0],gym:D.gym,date:selectedDate,exercise:n});s.exercise=s.exercise||n;let area=$("sets");area.innerHTML='<h2>Satzauswertung</h2><button class="btn danger" id="resetAll">Alle Sätze löschen</button><details open id="setDetails"><summary>Sätze ein-/ausblenden</summary><div class="setgrid" id="setgrid"></div><div id="setform"></div></details>'; $("resetAll").onclick=()=>{if(confirm("Alle Sätze dieser Übung für diesen Tag löschen?")){s.sets=[];save();refresh();form()}};
 function refresh(){let g=$("setgrid");g.innerHTML="";s.sets.forEach((v,x)=>{let z=document.createElement("div");z.className="setmini active";z.innerHTML="Satz "+(x+1)+"<b>"+v.kg+" kg · "+v.rep+" Wdh</b><button class=iconbtn data-del="+x+" title='Satz löschen'>🗑</button>";z.querySelector("button").onclick=()=>{if(confirm("Satz "+(x+1)+" löschen?")){s.sets.splice(x,1);save();refresh();form()}};g.append(z)});let next=document.createElement("div");next.className="setmini";next.innerHTML="Satz "+(s.sets.length+1)+"<b>bereit</b>";g.append(next)}
-function form(){let i=s.sets.length,f=$("setform");f.innerHTML='<div class="setcard"><h3>Satz '+(i+1)+' eintragen</h3><div class="grid"><label>Gewicht (kg)<input id="kg" type="number" step=".5" placeholder="kg"></label><label>Wiederholungen<input id="rep" type="number" placeholder="Wdh."></label></div><button class="btn">Satz '+(i+1)+' speichern ✓</button></div>';f.querySelector("button").onclick=()=>{let kg=$("kg").value,rep=$("rep").value;if(!kg||!rep){alert("Bitte Gewicht und Wiederholungen eingeben.");return}let weight=Number(kg),reps=Number(rep);s.sets.push({kg:String(kg),rep:String(rep)});let currentPR=Number(exd(n).pr)||0;
-if(reps===1&&weight>currentPR){exd(n).pr=String(weight);if($("pr"))$("pr").value=String(weight);alert("Neuer PR! "+weight+" kg × 1 Wiederholung 🏆")}
-save();refresh();form()}}
+function form(){let i=s.sets.length,f=$("setform");f.innerHTML='<div class="setcard"><h3>Satz '+(i+1)+' eintragen</h3><div class="grid"><label>Gewicht (kg)<input id="kg" type="number" step=".5" placeholder="kg"></label><label>Wiederholungen<input id="rep" type="number" placeholder="Wdh."></label></div><button class="btn">Satz '+(i+1)+' speichern ✓</button></div>';f.querySelector("button").onclick=()=>{let kg=$("kg").value,rep=$("rep").value;if(!kg||!rep){alert("Bitte Gewicht und Wiederholungen eingeben.");return}let weight=Number(kg),reps=Number(rep);if(!Number.isFinite(weight)||weight<0||!Number.isInteger(reps)||reps<1){alert("Bitte gültiges Gewicht und ganze Wiederholungszahl eingeben.");return}
+let oldPR=calculatePR(n);s.sets.push({kg:String(kg),rep:String(rep)});let newPR=false;
+if(reps===1&&(oldPR===0||weight>=oldPR+1)){exd(n).pr=String(weight);newPR=true}
+save();if($("pr"))$("pr").value=exd(n).pr;if(newPR)alert("Neuer PR! "+weight+" kg × 1 Wiederholung 🏆");refresh();form()}}
 refresh();form()}
 $("homeback").onclick=()=>{show("home");$("title").textContent="Trainingsübersicht";$("subtitle").textContent="Trainingsplan · Gym · Verlauf"};$("workback").onclick=()=>openW(wi);
 $("calendarBtn").onclick=calendarOpen;$("calback").onclick=()=>show("home");
