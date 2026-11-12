@@ -1,1 +1,1 @@
-GymPlan 1.2.6 – Enter/Öffnen auf Android speichert den Satz. Enter im Gewicht wechselt zu Wiederholungen.\n
+GymPlan 1.2.7 – entfernt versehentlich sichtbaren JavaScript-Text. Enter/Öffnen-Speichern bleibt enthalten.\n
