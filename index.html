@@ -1,4 +1,4 @@
-<!-- GYM APP VERSION: 1.2.8 | AUTO WORKWEIGHT + CALENDAR SETS -->
+<!-- GYM APP VERSION: 1.2.9 | AUTO WORKWEIGHT + CALENDAR SETS -->
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GYM PLAN · 1.1.0</title><style>
 :root{--bg:#0d1117;--panel:#151c25;--line:#293544;--txt:#f4f7fb;--muted:#8d9aaa;--green:#70e0ad;--orange:#f0b66a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.45 system-ui;padding:16px;max-width:760px;margin:auto}header{padding:8px 2px 20px}.eyebrow{color:var(--green);font-size:.72rem;letter-spacing:.16em;font-weight:800}h1{font-size:1.8rem;margin:8px 0;letter-spacing:-.04em}#subtitle{color:var(--muted);margin:0}
@@ -24,8 +24,13 @@ h2{font-size:1rem;color:#b5c1ce;margin:22px 0 10px}.back{background:none;border:
     scroll-margin-top: 24px;
   }
 }
-</style></head><body>
-<header><div class="eyebrow">D. BERNERT · PERSONAL TRAINING</div><h1 id="title">Trainingsübersicht</h1><p id="subtitle">Trainingsplan · Gym · Verlauf</p><div class="brandline"><span>GYM PLAN</span><b>VERSION 1.2.8</b><span>BUILT BY D. BERNERT</span></div></header>
+</style><link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0e14">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head><body>
+<header><div class="eyebrow">D. BERNERT · PERSONAL TRAINING</div><h1 id="title">Trainingsübersicht</h1><p id="subtitle">Trainingsplan · Gym · Verlauf</p><div class="brandline"><span>GYM PLAN</span><b>VERSION 1.2.9</b><span>BUILT BY D. BERNERT</span></div></header>
 <section id="home" class="screen"><div class="panel"><h3>Mein Gym</h3><div class="row"><select id="gymSelect"></select><button class="btn" style="margin:5px 0;flex:0 0 45px" id="addGym">＋</button><button class="btn secondary" style="margin:5px 0;flex:0 0 45px" id="delGym">−</button></div><small style="color:var(--muted)">Aktuelles Gym wird bei Training und Kalender gespeichert.</small></div>
 <div class="week"><button class="day daybtn" data-w="0"><span>MO</span><b>Oberkörper A</b><small>Push · Pull</small><em>Training öffnen ↗</em></button><button class="day daybtn" data-w="1"><span>DI</span><b>Unterkörper A</b><small>Beine · Core</small><em>Training öffnen ↗</em></button><div class="day rest"><span>MI</span><b>Rest Day</b></div><button class="day daybtn" data-w="2"><span>DO</span><b>Oberkörper B</b><small>Schulter · Rücken</small><em>Training öffnen ↗</em></button><button class="day daybtn" data-w="3"><span>FR</span><b>Unterkörper B</b><small>Beine · Core</small><em>Training öffnen ↗</em></button><div class="day rest"><span>SA / SO</span><b>Rest Day</b></div></div>
 <button class="btn secondary" id="calendarBtn">📅 Trainingshistorie / Kalender</button><div class="foot"><button id="backup">Backup exportieren</button><button id="restore">Backup importieren</button><input id="file" type="file" accept="application/json" hidden></div></section>
@@ -126,7 +131,7 @@ function calendarOpen(){show("calendar");calendarRender()}
 function calendarRender(){let y=calDate.getFullYear(),m=calDate.getMonth();$("month").textContent=calDate.toLocaleDateString("de-DE",{month:"long",year:"numeric"});let g=$("calgrid");g.innerHTML="";["Mo","Di","Mi","Do","Fr","Sa","So"].forEach(x=>{let d=document.createElement("div");d.className="calhead";d.textContent=x;g.append(d)});let first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate();for(let i=0;i<first;i++)g.append(document.createElement("div"));for(let d=1;d<=days;d++){let date=iso(new Date(y,m,d)),b=document.createElement("button");b.className="calday"+(Object.values(D.sessions).some(s=>s.date===date)?" has":"")+(date===selectedDate?" selected":"");b.textContent=d;b.onclick=()=>{selectedDate=date;calendarRender();calendarDetail(date)};g.append(b)}calendarDetail(selectedDate)}
 function calendarDetail(date){let a=Object.values(D.sessions).filter(s=>s.date===date);$("caldetail").innerHTML='<h2>'+new Date(date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"long"})+'</h2>'+a.map(s=>'<div class="entry"><b>'+s.workout+' · '+s.exercise+'</b><br><small>'+s.gym+' · '+(s.sets||[]).length+' Sätze</small><div>'+(s.sets||[]).map((v,i)=>'Satz '+(i+1)+': '+v.kg+' kg × '+v.rep+' Wdh.').join('<br>')+'</div></div>').join("")+'<button class="btn secondary" id="manual">Training für diesen Tag eintragen / nachholen</button>'; $("manual").onclick=()=>{let w=prompt("Welche Einheit? 1 Oberkörper A, 2 Unterkörper A, 3 Oberkörper B, 4 Unterkörper B");let i=+w-1;if(i<0||i>3)return;wi=i;show("workout");selectedDate=date;openW(i)}}
 $("prev").onclick=()=>{calDate.setMonth(calDate.getMonth()-1);calendarRender()};$("next").onclick=()=>{calDate.setMonth(calDate.getMonth()+1);calendarRender()};
-$("backup").onclick=()=>{let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({app:"Gym Plan",version:"1.2.8",author:"D. Bernert",exportedAt:new Date().toISOString(),data:D,sessions:D.sessions||{}})],{type:"application/json"}));a.download="gym-backup.json";a.click()};
+$("backup").onclick=()=>{let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({app:"Gym Plan",version:"1.2.9",author:"D. Bernert",exportedAt:new Date().toISOString(),data:D,sessions:D.sessions||{}})],{type:"application/json"}));a.download="gym-backup.json";a.click()};
 $("restore").onclick=()=>$("file").click();$("file").onchange=async e=>{try{let imported=JSON.parse(await e.target.files[0].text());
 D=imported.data||imported;
 if(imported.sessions&&!D.sessions)D.sessions=imported.sessions;
@@ -136,4 +141,9 @@ D.gyms=D.gyms||["Mein Gym"];D.gym=D.gym||D.gyms[0];
 save();gymOptions();alert("Backup inkl. Trainingssätzen geladen")}catch{alert("Backup ungültig")}};
 </script>
 ;
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(console.error));
+}
+</script>
 </body></html>

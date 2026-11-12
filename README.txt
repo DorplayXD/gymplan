@@ -1,1 +1,1 @@
-GymPlan 1.2.8 – Arbeitssätze öffnen scrollt automatisch zum Satzbereich.\n
+GymPlan 1.2.9 – PWA Installierbarkeit. Alle Dateien zusammen im GitHub-Pages-Ordner veröffentlichen.\n
