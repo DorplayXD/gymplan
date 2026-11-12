@@ -1,2 +1,1 @@
-Gym Plan 1.2.4 – D. Bernert
-index.html im GitHub ersetzen.
+GymPlan 1.2.5\n\nAndroid-Tastatur: Viewport-Anpassung und automatisches Scrollen zum fokussierten Eingabefeld.\nGitHub Pages: index.html ersetzen.\n
