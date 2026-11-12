@@ -1,1 +1,2 @@
-Gym Plan 1.2.0 – Auto-Arbeitsgewicht, PR und Satzdetails im Kalender. GitHub: index.html ersetzen.
+Gym Plan 1.2.3 – D. Bernert
+index.html im GitHub ersetzen.
