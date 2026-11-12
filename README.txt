@@ -1,1 +1,1 @@
-GymPlan 1.2.7 – entfernt versehentlich sichtbaren JavaScript-Text. Enter/Öffnen-Speichern bleibt enthalten.\n
+GymPlan 1.2.8 – Arbeitssätze öffnen scrollt automatisch zum Satzbereich.\n
