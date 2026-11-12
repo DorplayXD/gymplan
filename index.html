@@ -1,4 +1,4 @@
-<!-- GYM APP VERSION: 1.0.4 | REAL PR 0.1 KG -->
+<!-- GYM APP VERSION: 1.2.0 | AUTO WORKWEIGHT + CALENDAR SETS -->
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GYM PLAN · 1.1.0</title><style>
 :root{--bg:#0d1117;--panel:#151c25;--line:#293544;--txt:#f4f7fb;--muted:#8d9aaa;--green:#70e0ad;--orange:#f0b66a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.45 system-ui;padding:16px;max-width:760px;margin:auto}header{padding:8px 2px 20px}.eyebrow{color:var(--green);font-size:.72rem;letter-spacing:.16em;font-weight:800}h1{font-size:1.8rem;margin:8px 0;letter-spacing:-.04em}#subtitle{color:var(--muted);margin:0}
@@ -12,7 +12,7 @@ h2{font-size:1rem;color:#b5c1ce;margin:22px 0 10px}.back{background:none;border:
 
 .brandline{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:14px;padding:10px 12px;border:1px solid #35514b;border-radius:10px;background:linear-gradient(100deg,#10251f,#17202a);font-size:.66rem;letter-spacing:.08em;color:#9fb8b0}.brandline b{color:#7ef0b7}.day{background:linear-gradient(145deg,#17232c,#111820);box-shadow:0 6px 20px #0002}.panel{box-shadow:0 8px 24px #0002}.btn{background:linear-gradient(135deg,#78f0b7,#3acb91);box-shadow:0 4px 16px #48d99a22}.exercise{background:linear-gradient(110deg,#17222c,#121820);border-color:#2b3b49}.eyebrow{font-size:.75rem}.setmini.active{border-color:#5de8a9;background:#13251e}.pr{font-weight:800}.brandline span:first-child{font-weight:900;color:#e8fff5}
 </style></head><body>
-<header><div class="eyebrow">D. BERNERT · PERSONAL TRAINING</div><h1 id="title">Trainingsübersicht</h1><p id="subtitle">Trainingsplan · Gym · Verlauf</p><div class="brandline"><span>GYM PLAN</span><b>VERSION 1.1.0</b><span>BUILT BY D. BERNERT</span></div></header>
+<header><div class="eyebrow">D. BERNERT · PERSONAL TRAINING</div><h1 id="title">Trainingsübersicht</h1><p id="subtitle">Trainingsplan · Gym · Verlauf</p><div class="brandline"><span>GYM PLAN</span><b>VERSION 1.2.0</b><span>BUILT BY D. BERNERT</span></div></header>
 <section id="home" class="screen"><div class="panel"><h3>Mein Gym</h3><div class="row"><select id="gymSelect"></select><button class="btn" style="margin:5px 0;flex:0 0 45px" id="addGym">＋</button><button class="btn secondary" style="margin:5px 0;flex:0 0 45px" id="delGym">−</button></div><small style="color:var(--muted)">Aktuelles Gym wird bei Training und Kalender gespeichert.</small></div>
 <div class="week"><button class="day daybtn" data-w="0"><span>MO</span><b>Oberkörper A</b><small>Push · Pull</small><em>Training öffnen ↗</em></button><button class="day daybtn" data-w="1"><span>DI</span><b>Unterkörper A</b><small>Beine · Core</small><em>Training öffnen ↗</em></button><div class="day rest"><span>MI</span><b>Rest Day</b></div><button class="day daybtn" data-w="2"><span>DO</span><b>Oberkörper B</b><small>Schulter · Rücken</small><em>Training öffnen ↗</em></button><button class="day daybtn" data-w="3"><span>FR</span><b>Unterkörper B</b><small>Beine · Core</small><em>Training öffnen ↗</em></button><div class="day rest"><span>SA / SO</span><b>Rest Day</b></div></div>
 <button class="btn secondary" id="calendarBtn">📅 Trainingshistorie / Kalender</button><div class="foot"><button id="backup">Backup exportieren</button><button id="restore">Backup importieren</button><input id="file" type="file" accept="application/json" hidden></div></section>
@@ -50,6 +50,18 @@ function calculatePR(n){
   d.pr=best?String(best):"";
   return best;
 }
+function updateWorkWeight(n,s){
+ const d=exd(n),base=Number(String(d.work||0).replace(",","."));
+ const sets=(s.sets||[]).map(v=>({kg:Number(String(v.kg??v.weight??0).replace(",",".")),rep:Number(v.rep??v.reps)})).filter(v=>v.kg>0&&Number.isInteger(v.rep)&&v.rep>0);
+ // Ein deutlich leichter erster Satz ist Warm-up und wird nicht bewertet.
+ const workSets=sets.filter((v,i)=>!(i===0&&base>0&&v.kg<base*.75));
+ if(!workSets.length)return base||0;
+ const reps=workSets.map(v=>v.rep);
+ if(reps.some(r=>r>10)){d.work=String(Math.round(Math.max(...workSets.filter(v=>v.rep>10).map(v=>v.kg))*1.025*10)/10)}
+ else if(reps.some(r=>r<5)){d.work=String(Math.round(Math.min(...workSets.filter(v=>v.rep<5).map(v=>v.kg))*.975*10)/10)}
+ // 6–8 reps (sowie 5/9/10) bestätigen das aktuelle Arbeitsgewicht.
+ save();return Number(d.work||base||0)
+}
 function machineD(n){D.machines=D.machines||{};D.machines[D.gym]=D.machines[D.gym]||{};return D.machines[D.gym][n]||(D.machines[D.gym][n]={machine:"",settings:""})}
 function warm(n){let w=+exd(n).work;return w?Math.max(1,Math.round(w*.5*2)/2)+" kg × 5–8":"—"}
 function show(s){["home","workout","detail","calendar"].forEach(x=>$(x).hidden=x!==s)}
@@ -74,6 +86,7 @@ function refresh(){let g=$("setgrid");g.innerHTML="";s.sets.forEach((v,x)=>{let 
 function form(){let i=s.sets.length,f=$("setform");f.innerHTML='<div class="setcard"><h3>Satz '+(i+1)+' eintragen</h3><div class="grid"><label>Gewicht (kg)<input id="kg" type="number" step="0.1" placeholder="kg"></label><label>Wiederholungen<input id="rep" type="number" placeholder="Wdh."></label></div><button class="btn">Satz '+(i+1)+' speichern ✓</button></div>';f.querySelector("button").onclick=()=>{let kg=$("kg").value,rep=$("rep").value;if(!kg||!rep){alert("Bitte Gewicht und Wiederholungen eingeben.");return}let weight=Number(kg),reps=Number(rep);if(!Number.isFinite(weight)||weight<0||!Number.isInteger(reps)||reps<1){alert("Bitte gültiges Gewicht und ganze Wiederholungszahl eingeben.");return}
 let oldPR=calculatePR(n);
 s.sets.push({kg:String(weight),rep:String(reps)});
+updateWorkWeight(n,s);
 const newPR=weight>oldPR;
 const actualPR=calculatePR(n);
 save();
@@ -85,9 +98,9 @@ $("homeback").onclick=()=>{show("home");$("title").textContent="Trainingsübersi
 $("calendarBtn").onclick=calendarOpen;$("calback").onclick=()=>show("home");
 function calendarOpen(){show("calendar");calendarRender()}
 function calendarRender(){let y=calDate.getFullYear(),m=calDate.getMonth();$("month").textContent=calDate.toLocaleDateString("de-DE",{month:"long",year:"numeric"});let g=$("calgrid");g.innerHTML="";["Mo","Di","Mi","Do","Fr","Sa","So"].forEach(x=>{let d=document.createElement("div");d.className="calhead";d.textContent=x;g.append(d)});let first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate();for(let i=0;i<first;i++)g.append(document.createElement("div"));for(let d=1;d<=days;d++){let date=iso(new Date(y,m,d)),b=document.createElement("button");b.className="calday"+(Object.values(D.sessions).some(s=>s.date===date)?" has":"")+(date===selectedDate?" selected":"");b.textContent=d;b.onclick=()=>{selectedDate=date;calendarRender();calendarDetail(date)};g.append(b)}calendarDetail(selectedDate)}
-function calendarDetail(date){let a=Object.values(D.sessions).filter(s=>s.date===date);$("caldetail").innerHTML='<h2>'+new Date(date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"long"})+'</h2>'+a.map(s=>'<div class="entry"><b>'+s.workout+'</b><br><small>'+s.gym+' · '+Object.keys(s.sets||{}).length+' Sätze erfasst</small></div>').join("")+'<button class="btn secondary" id="manual">Training für diesen Tag eintragen / nachholen</button>'; $("manual").onclick=()=>{let w=prompt("Welche Einheit? 1 Oberkörper A, 2 Unterkörper A, 3 Oberkörper B, 4 Unterkörper B");let i=+w-1;if(i<0||i>3)return;wi=i;show("workout");selectedDate=date;openW(i)}}
+function calendarDetail(date){let a=Object.values(D.sessions).filter(s=>s.date===date);$("caldetail").innerHTML='<h2>'+new Date(date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"long"})+'</h2>'+a.map(s=>'<div class="entry"><b>'+s.workout+' · '+s.exercise+'</b><br><small>'+s.gym+' · '+(s.sets||[]).length+' Sätze</small><div>'+(s.sets||[]).map((v,i)=>'Satz '+(i+1)+': '+v.kg+' kg × '+v.rep+' Wdh.').join('<br>')+'</div></div>').join("")+'<button class="btn secondary" id="manual">Training für diesen Tag eintragen / nachholen</button>'; $("manual").onclick=()=>{let w=prompt("Welche Einheit? 1 Oberkörper A, 2 Unterkörper A, 3 Oberkörper B, 4 Unterkörper B");let i=+w-1;if(i<0||i>3)return;wi=i;show("workout");selectedDate=date;openW(i)}}
 $("prev").onclick=()=>{calDate.setMonth(calDate.getMonth()-1);calendarRender()};$("next").onclick=()=>{calDate.setMonth(calDate.getMonth()+1);calendarRender()};
-$("backup").onclick=()=>{let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({app:"Gym Plan",version:"1.1.0",author:"D. Bernert",exportedAt:new Date().toISOString(),data:D,sessions:D.sessions||{}})],{type:"application/json"}));a.download="gym-backup.json";a.click()};
+$("backup").onclick=()=>{let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({app:"Gym Plan",version:"1.2.0",author:"D. Bernert",exportedAt:new Date().toISOString(),data:D,sessions:D.sessions||{}})],{type:"application/json"}));a.download="gym-backup.json";a.click()};
 $("restore").onclick=()=>$("file").click();$("file").onchange=async e=>{try{let imported=JSON.parse(await e.target.files[0].text());
 D=imported.data||imported;
 if(imported.sessions&&!D.sessions)D.sessions=imported.sessions;
